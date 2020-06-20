@@ -1,27 +1,22 @@
-apiVersion: extensions/v1beta1
+apiVersion: apps/v1
 kind: Deployment
 metadata:
+  name: reverse-proxy
   labels:
-    service: reverseproxy
-  name: reverseproxy
+    service: reverse-proxy
 spec:
   replicas: 1
+  selector:
+      matchLabels:
+        app: reverse-proxy
   template:
     metadata:
       labels:
-        service: reverseproxy
+        app: reverse-proxy
     spec:
       containers:
-      - image: gurppup/simple-reverse-proxy
-        name: reverseproxy
-        imagePullPolicy: Always          
-        resources:
-          requests:
-            memory: "64Mi"
-            cpu: "250m"
-          limits:
-            memory: "1024Mi"
-            cpu: "500m"       
+      - name: reverse-proxy
+        image: gurppup/simple-reverse-proxy   
         ports:
         - containerPort: 8080
       restartPolicy: Always
